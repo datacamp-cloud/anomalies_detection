@@ -11,8 +11,8 @@ st.set_page_config(layout="wide")
 st.title("📊 Dashboard de Détection d'Anomalies dans les Ventes")
 
 # MENU NAVIGATION
-st.sidebar.title("🧭 Navigation")
-section = st.sidebar.radio("Aller à :", ["🏠 Accueil", "📊 Détection d’anomalies", "🚨 Alertes & recommandations", "📅 Prévision des ventes"])
+st.sidebar.title("Navigation")
+section = st.sidebar.radio("Aller à :", ["Accueil", "Détection d’anomalies", "Alertes & recommandations", "Prévision des ventes"])
 
 # Génération des données
 @st.cache_data
