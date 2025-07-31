@@ -91,7 +91,7 @@ df['anomaly_category'] = np.select([
 
 
 # === ACCUEIL ===
-if section == "🏠 Accueil":
+if section == "Accueil":
     st.header("Bienvenue sur le Dashboard d’Analyse des Ventes 🧠📈")
     st.markdown("""
     Ce tableau de bord utilise l’intelligence artificielle pour détecter automatiquement des anomalies dans les ventes.
