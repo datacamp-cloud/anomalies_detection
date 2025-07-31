@@ -89,6 +89,7 @@ df['anomaly_category'] = np.select([
     df['sales'] < median_sales * 0.5
 ], ['spike', 'drop'], default='moderate')
 
+
 # === ACCUEIL ===
 if section == "🏠 Accueil":
     st.header("Bienvenue sur le Dashboard d’Analyse des Ventes 🧠📈")
@@ -104,16 +105,17 @@ if section == "🏠 Accueil":
     👉 Utilisez le menu à gauche pour naviguer dans les différentes sections.
     """)
 
+
 # === DÉTECTION ===
-elif section == "📊 Détection d’anomalies":
+elif section == " Détection d’anomalies":
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("📅 Nombre de jours", len(df))
-    col2.metric("💰 Ventes moyennes", f"{df['sales'].mean():.0f} €")
-    col3.metric("🚨 Anomalies détectées", df['anomaly'].sum())
-    col4.metric("📈 % d'anomalies", f"{df['anomaly'].mean()*100:.1f} %")
+    col1.metric("Nombre de jours", len(df))
+    col2.metric("Ventes moyennes", f"{df['sales'].mean():.0f} €")
+    col3.metric("Anomalies détectées", df['anomaly'].sum())
+    col4.metric("% d'anomalies", f"{df['anomaly'].mean()*100:.1f} %")
 
     with st.sidebar:
-        st.header("🔍 Filtres")
+        st.header("Filtres")
         selected_months = st.multiselect("Mois", sorted(df['month'].unique()), default=sorted(df['month'].unique()))
         selected_categories = st.multiselect("Catégorie d'anomalie", df['anomaly_category'].unique(), default=df['anomaly_category'].unique())
 
@@ -123,7 +125,7 @@ elif section == "📊 Détection d’anomalies":
     ]
 
     # Série temporelle
-    st.subheader("📅 Ventes journalières avec anomalies")
+    st.subheader("Ventes journalières avec anomalies")
     fig, ax = plt.subplots(figsize=(14, 4))
     ax.plot(filtered['date'], filtered['sales'], label='Ventes')
     ax.scatter(filtered[filtered['anomaly']]['date'], filtered[filtered['anomaly']]['sales'], color='red', label='Anomalies', s=50)
@@ -133,7 +135,7 @@ elif section == "📊 Détection d’anomalies":
     st.pyplot(fig)
 
     # Histogramme
-    st.subheader("📊 Répartition des ventes")
+    st.subheader("Répartition des ventes")
     fig2, ax2 = plt.subplots()
     ax2.hist(filtered[~filtered['anomaly']]['sales'], bins=50, alpha=0.7, label='Normales')
     ax2.hist(filtered[filtered['anomaly']]['sales'], bins=20, alpha=0.7, color='red', label='Anomalies')
@@ -141,37 +143,39 @@ elif section == "📊 Détection d’anomalies":
     st.pyplot(fig2)
 
     # Anomalies par catégorie
-    st.subheader("📋 Anomalies par catégorie")
+    st.subheader("Anomalies par catégorie")
     st.bar_chart(filtered[filtered['anomaly']]['anomaly_category'].value_counts())
 
     # Détails des anomalies
-    st.subheader("📄 Détails des anomalies détectées")
+    st.subheader("Détails des anomalies détectées")
     st.dataframe(filtered[filtered['anomaly']][['date', 'sales', 'anomaly_type', 'anomaly_category']].reset_index(drop=True))
 
+
 # === ALERTES ===
-elif section == "🚨 Alertes & recommandations":
+elif section == "Alertes & recommandations":
     anomalies_detected = df[df['anomaly']]
-    st.subheader("🚨 Anomalies critiques détectées")
+    st.subheader("Anomalies critiques détectées")
 
     for _, row in anomalies_detected.iterrows():
         st.markdown(f"""
-        #### 📌 {row['date'].strftime('%d %B %Y')}
+        #### {row['date'].strftime('%d %B %Y')}
         - Ventes : **{int(row['sales'])}€**
         - Type : `{row['anomaly_type']}` / Catégorie : `{row['anomaly_category']}`
-        - 🔁 Action recommandée :
+        - Action recommandée :
         {"• Vérifier les stocks, bugs ou promotions imprévues" if row['anomaly_category'] == 'drop' else "• Analyser si une promo ou un événement explique cette hausse"}
         ---
         """)
 
-# Prévision des ventes
-elif section == "📅 Prévision des ventes":
-    st.subheader("📈 Prévision des ventes sur 30 jours")
 
-    # Étendre la série de dates
+# Prévision des ventes
+elif section == " Prévision des ventes":
+    st.subheader("Prévision des ventes sur 30 jours")
+
+    # Préparation des données
     last_date = df['date'].max()
     future_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=30)
 
-    # Utiliser une moyenne mobile des 30 derniers jours comme base
+    # Utilisation de la moyenne mobile et de la tendance
     forecast_base = df['sales'].rolling(window=30, min_periods=1).mean().iloc[-1]
     trend = df['sales'].diff().mean()  # petite tendance moyenne
 
