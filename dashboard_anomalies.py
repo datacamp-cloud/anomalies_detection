@@ -8,7 +8,7 @@ from datetime import datetime
 
 # Configuration de la page
 st.set_page_config(layout="wide")
-st.title("📊 Dashboard de Détection d'Anomalies dans les Ventes")
+st.title("DASHBOARD DE DETECTION D'ANOMALIES DANS LES VENTES")
 
 # MENU NAVIGATION
 st.sidebar.title("Navigation")
@@ -92,7 +92,7 @@ df['anomaly_category'] = np.select([
 
 # === ACCUEIL ===
 if section == "Accueil":
-    st.header("Bienvenue sur le Dashboard d’Analyse des Ventes 🧠📈")
+    st.header("Bienvenue sur le Dashboard d’Analyse des Ventes !")
     st.markdown("""
     Ce tableau de bord utilise l’intelligence artificielle pour détecter automatiquement des anomalies dans les ventes.
 
@@ -102,7 +102,7 @@ if section == "Accueil":
     - Recommandations business
     - Visualisation des KPI
 
-    👉 Utilisez le menu à gauche pour naviguer dans les différentes sections.
+    NB: Utilisez le menu à gauche pour naviguer dans les différentes sections.
     """)
 
 
